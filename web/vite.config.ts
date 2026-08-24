@@ -7,7 +7,10 @@ export default defineConfig({
     port: 5173,
     proxy: {
       // The Django API runs on 8000; the browser only ever talks to /api.
-      '/api': 'http://localhost:8000',
+      // Use 127.0.0.1, not localhost: on machines where localhost resolves to
+      // ::1 first, the proxy would dial [::1]:8000 and runserver only listens
+      // on IPv4, so every /api call would come back as a proxy 500.
+      '/api': 'http://127.0.0.1:8000',
     },
   },
   test: {
